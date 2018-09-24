@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      <h1> {{ job }} </h1>
+    </title>
+  </head>
+  <body>
+    <h1> The job that was chosen was: {{ job }} </h1>
+    <table style= "width:100%">
+      {%for line in dict%}
+      <tr>
+	<td>{{chart[line]}}</td>
+      </tr>
+      {% endfor %}
+	
+      
+  </body>
+</html>
