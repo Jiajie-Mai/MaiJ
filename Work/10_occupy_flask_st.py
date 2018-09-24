@@ -1,45 +1,72 @@
 #Jiajie Mai
-#softDev Pd 07
-#hw 10: Jinja Tuning
 
-#Help from Liang for occupation code
-#Gave up after some time, couldn't understand how to fix the problem as I have no knowledge in Python to work this out
-
-#imports random and csv
-import random, csv
 from flask import Flask, render_template
+from random import choices
+app = Flask(__name__)
 
-app = Flask (__name__)
+def parse_data(filename):
+    file = open(filename, 'r')  #open the file in read mode
+    raw = file.read()           #get the text
+    list = raw.split("\n")      #split on new lines
 
-#setting up the resources
-source = open('occupations.csv', 'rU')
-reader = csv.reader(source)
+    counter = 0
+    while counter < len(list):  #loop thru it, splitting it on commas
+        #remove unecessary quotes
+        if '"' in list[counter]:        
+            list[counter] = list[counter].replace('"', '')
 
-dict = {}
-for line in reader:
-	dict[line[0]] = line[1]
+        #splits on the last instance of a comma, once
+        list[counter] = list[counter].rsplit(',', 1)
+        counter += 1
+    
+    #make the empty dictionary and loop thru
+    #the raw data of the file
+    dict = {}
+    counter = 1
+    while counter < len(list) - 2:
+        dict[list[counter][0]] = float(list[counter][1])
+        counter += 1
 
-def getKey(dict):
-	copy = {}
-	for key in dict:
-		copy[key] = dict[key]
-	copy.pop('Total')
-	result = random.random() * 100
-	sum = 0
-	for key in copy:
-		sum += float(copy[key])
-		if sum >= result:
-			return key
+    #print(dict) #diagnostic print statement
+    return dict
 
-@app.route("/")               
-def hello():
-    return "Go to occupations for the work"
+def pick_job(dict):
+    jobs = list(dict.keys()) #list of keys
+    values = []              #empty list to be filled with values
 
-@app.route("/occupations")
-def jobs():
-    return render_template("foo.html", job = getKey(dict), chart = disc)
+    #loop thru the dict to get the weights/values
+    for key in jobs:
+        values.append(dict[key])
+
+    #diagnostic print statements
+    #print(values)
+    #print(jobs)
+
+    #uses the choices method in random which allows for one to pick from a list of items
+    #and have it be weighted
+    job = choices(jobs, values)
+    return job[0]
+
+@app.route('/')
+def hello_world():
+    print("about to print __name__")
+    print(__name__)
+    return 'yeet'
+
+dict = parse_data('data/occupations.csv')
+jobs = list(dict.keys())
+values = []              
+for key in jobs:
+    values.append(dict[key])
 
 
+@app.route('/occupations')
+def occupations():
+    return render_template('occupations.html',
+                            random_occupation = pick_job(dict),
+                            _dict = dict)
+                            
 
-app.run(debug=True)
-
+app.debug = True
+if __name__ == "__main__":
+app.run()
