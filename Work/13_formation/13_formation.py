@@ -8,13 +8,13 @@ def choice():
     return render_template('input.html')
 
 
-@app.route('/auth')
+@app.route("/auth", methods = ["POST"])
 def authenticate():
     print(app)
     print(request)
     print(request.args)
     print(request.headers)
-    return render_template('greet.html', username = request.args, request_type = request.method )
+    return render_template('greet.html', username = request.args["Username"], request_type = request.method )
 
 app.debug = True
 app.run()
