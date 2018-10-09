@@ -15,9 +15,36 @@ c = db.cursor()               #facilitate db ops
 #==========================================================
 #INSERT YOUR POPULATE CODE IN THIS ZONE
 
-
-command = ""          #build SQL stmt, save as string
+#peeps.csv
+command = "CREATE TABLE peeps (name TEXT, age INTEGER, id INTEGER"
+#build SQL stmt, save as string
 c.execute(command)    #run SQL statement
+
+with open('peeps.csv') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        command = ""
+        command += "INSERT INTO peeps VALUES ("
+        command += "'" + row['name'] + "', "
+        command += row['age'] + ", "
+        command +=  row['id'] + ")"
+        c.execute(command)
+        
+#courses.csv
+command = "CREATE TABLE courses (code TEXT, mark INTEGER, id INTEGER"
+c.execute(command)
+
+with open('courses.csv') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        command = ""
+	command += "INSERT INTO courses VALUES ("
+	command += "'" + row['name'] + "', "
+	command += row['age'] + ", "
+	command +=  row['id'] + ")"
+        c.execute(command)
+
+        
 
 #==========================================================
 

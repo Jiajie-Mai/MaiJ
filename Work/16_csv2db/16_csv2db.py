@@ -1,52 +1,47 @@
-#Jiajie Mai
+#Jiajie Mai and Daniel Keriazis
 #SoftDev1 pd7
 #K16 No Trouble
 #2018-10-04
 
-import sqlite3   #enable control of an sqlite database
-import csv       #facilitates CSV I/O
+import sqlite3  # Enable control of an sqlite database
+import csv  # Facilitates CSV I/O
 
+DB_FILE="database.db"
 
-DB_FILE="discobandit.db"
+db = sqlite3.connect(DB_FILE)  # Open if file exists, otherwise create
+c = db.cursor()  # Facilitate db ops
 
-db = sqlite3.connect(DB_FILE) #open if file exists, otherwise create
-c = db.cursor()               #facilitate db ops
+counts = {}
+totals = {}
+averages = {}
+names = {}
 
-#==========================================================
-#INSERT YOUR POPULATE CODE IN THIS ZONE
-
-#peeps.csv
-command = "CREATE TABLE peeps (name TEXT, age INTEGER, id INTEGER"
-#build SQL stmt, save as string
-c.execute(command)    #run SQL statement
-
-with open('peeps.csv') as csvfile:
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        command = ""
-        command += "INSERT INTO peeps VALUES ("
-        command += "'" + row['name'] + "', "
-        command += row['age'] + ", "
-        command +=  row['id'] + ")"
-        c.execute(command)
-        
-#courses.csv
-command = "CREATE TABLE courses (code TEXT, mark INTEGER, id INTEGER"
+command = "SELECT name,code,mark,courses.id FROM courses,peeps WHERE courses.id = peeps.id"
 c.execute(command)
 
-with open('courses.csv') as csvfile:
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        command = ""
-	command += "INSERT INTO courses VALUES ("
-	command += "'" + row['name'] + "', "
-	command += row['age'] + ", "
-	command +=  row['id'] + ")"
-        c.execute(command)
+for i in c.fetchall():  # Get output of SELECT statement
+    name, code, mark, student = i
+    if student not in counts:
+        counts[student] = 0
+        totals[student] = 0
+    counts[student] += 1
+    totals[student] += mark
+    names[student] = name
 
-        
+# Iteratre through all student ids and add them to the averages dict
+for student in counts:
+    total = totals[student]
+    count = counts[student]
+    averages[student] = round(total / count, 1)  # Calculate average
+    print(names[student], student, averages[student])
 
-#==========================================================
+# Create table peeps_avg with unique ids corresponding to student averages
+c.execute("CREATE TABLE peeps_avg (id INT PRIMARY KEY, avg INT)")
 
-db.commit() #save changes
-db.close()  #close database
+# Add rows to peeps_avg with id and avg
+for student in averages:
+    c.execute("INSERT INTO peeps_avg VALUES ({id}, {avg})"  # Add new row
+            .format(id=student, avg=averages[student]))  # Use proper values
+
+db.commit()  # Save changes
+db.close()  # Close database
