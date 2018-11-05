@@ -1,0 +1,39 @@
+
+body{
+    background-color: gray;
+    font-family: arial
+}
+h1{
+    text-align: center;
+    background-color: lightgray;
+    color: white;
+    font-family: arial
+}
+div{
+    float: left;
+    font-family: arial
+}
+h3{
+    font-family: arial
+}
+ul{
+    color: white;
+    margin-top: 0px;
+    font-family: arial;
+    list-style-type: none;
+}
+h2{
+    margin-left: 200 px;
+    font-family: arial
+}
+p{
+    margin-left: 200 px;
+    font-family: arial
+}
+footer{
+    background-color: darkgray;
+    text-align: right;
+    padding: 20px;
+    color: lightgray;
+    font-family: arial
+}
