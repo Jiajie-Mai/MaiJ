@@ -1,9 +1,0 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    {{date}}
-    <h2> Image from NASA:</h2>
-    <iframe src={{picture}} width="560" height="315"></iframe>
-    {{caption}}
-  </body>
-</html>
