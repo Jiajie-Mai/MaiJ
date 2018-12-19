@@ -1,7 +1,7 @@
 // Alex - Jiajie Mai, Alex Liu 
 // SoftDev1 pd7
-// K28 -- Sequential Progression
-// 2018-12-19 W
+// K29 -- Sequential Progression II: Electric Boogaloo
+// 2018-12-19
 
 var fibonacci = function(n){
     if (n == 0) return 0;
@@ -10,25 +10,40 @@ var fibonacci = function(n){
     return fibonacci(n - 1) + fibonacci(n-2);
 }
 
+var displayFib = function(){
+    var x = fibonacci(12);
+    console.log(x);
+}
+
 var gcd = (a,b) => {
-    var i,out = 0;
-    while(i < a || i < b){
-	if(a % i == 0 && b % i == 0) {out = i;}
-	i++
+    if (!b){
+	return a;
     }
-    return i;
+    return gcd(b, a % b);
+}
+
+var displayGcd = () => {
+    var x = gcd(135,81);
+    console.log(x);
 }
 
 var students = ["MaiJ", "LiuA", "adayR", "aschJ","belkebirl","chenJ","chowdhuryJ"]
 
 var randomStudent = function(){
-     var index = parseInt(Math.random() * studentList.length);
-  return studentList[index];
+     var index = parseInt(Math.random() * students.length);
+  return students[index];
 }
 
-var disButton = document.getElementById("b");
-disButton.addEventListener('click', printThings);
-
-var printThings = function(){
-    return console.log();
+var displayStudent = function(){
+    var x = randomStudent();
+    console.log(x);
 }
+
+var but1 = document.getElementById("a");
+but1.addEventListener("click", displayFib);
+
+var but2 = document.getElementById("b");
+but2.addEventListener("click", displayGcd);
+
+var but3 = document.getElementById("c");
+but3.addEventListener("click", displayStudent);

@@ -25,3 +25,10 @@ var randomStudent = function(){
      var index = parseInt(Math.random() * studentList.length);
   return studentList[index];
 }
+
+var disButton = document.getElementById("b");
+disButton.addEventListener('click', printThings);
+
+var printThings = function(){
+    return console.log();
+}
