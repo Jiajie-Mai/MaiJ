@@ -1,7 +1,7 @@
 #Jiajie Mai
 
-from flask import Flask, render_template
-from random import choices
+from flask import Flask, render_template, request
+#from random import choices
 app = Flask(__name__)
 
 def parse_data(filename):
@@ -51,22 +51,33 @@ def pick_job(dict):
 def hello_world():
     print("about to print __name__")
     print(__name__)
-    return 'yeet'
+    return render_template('button.html')
 
-dict = parse_data('data/occupations.csv')
-jobs = list(dict.keys())
-values = []              
-for key in jobs:
-    values.append(dict[key])
+#dict = parse_data('data/occupations.csv')
+#jobs = list(dict.keys())
+#values = []              
+#for key in jobs:
+    #values.append(dict[key])
 
 
-@app.route('/occupations')
-def occupations():
-    return render_template('occupations.html',
-                            random_occupation = pick_job(dict),
-                            _dict = dict)
-                            
+#@app.route('/occupations')
+#def occupations():
+   # return render_template('occupations.html',
+                            #random_occupation = pick_job(dict),
+                            #_dict = dict)
+
+#def button():
+   # return render_template('button.html')
+
+@app.route('/auth')
+def authenticate():
+    print(app)
+    print(request)
+    print(request.args)
+    print(request.args['username'])
+    print(request.headers)
+    return 'WELCOME ' + request.args['username'] + '! Waaaa hooo HAAAH'
 
 app.debug = True
 if __name__ == "__main__":
-app.run()
+    app.run()

@@ -4,7 +4,7 @@
 #2018-10-01
 
 import os
-from flask import Flask, render_template, request, session, url_for, redirect
+from flask import Flask, render_template, request, session, url_for, redirect, flash
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)

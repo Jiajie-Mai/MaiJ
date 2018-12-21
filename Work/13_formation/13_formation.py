@@ -8,7 +8,7 @@ def choice():
     return render_template('input.html')
 
 
-@app.route("/auth", methods = ["POST"])
+@app.route("/auth", methods = ["GET"])
 def authenticate():
     print(app)
     print(request)
